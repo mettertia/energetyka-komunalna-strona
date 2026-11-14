@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="pl">
 <head>
+<script>if(location.protocol==="http:"&&!/^(localhost|127\.0\.0\.1)$/.test(location.hostname)){location.replace("https://"+location.host+location.pathname+location.search+location.hash)}</script>
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark">
@@ -325,7 +327,7 @@ footer a{text-decoration:none} footer a:hover{color:var(--mist);text-decoration:
 /* ===== KONTAKT – UZUPEŁNIJ (te same dane co w portal/index.html) ===== */
 const CONTACT = {
   email: "admin@energetyka-komunalna.pl",
-  web3formsKey: ""    // klucz z https://web3forms.com
+  web3formsKey: "ff8f63dc-5223-4f30-9f80-95d792f2c688"    // klucz z https://web3forms.com
 };
 
 const $ = s => document.querySelector(s);
@@ -368,11 +370,8 @@ $("#notifyForm").addEventListener("submit", async e=>{
       else throw 0;
     }catch(_){msg.textContent="Nie udało się zapisać. Spróbuj ponownie za chwilę"+(CONTACT.email?" albo napisz na "+CONTACT.email:"")+"."}
     finally{btn.disabled=false;btn.textContent=old}
-  } else if(CONTACT.email){
-    location.href="mailto:"+CONTACT.email+"?subject="+encodeURIComponent("Powiadomienie o premierze")+"&body="+encodeURIComponent("Proszę o powiadomienie o premierze serwisu.\nE-mail: "+email+"\nKim jestem: "+role);
-    msg.textContent="Otwieramy program pocztowy z gotową wiadomością – wystarczy ją wysłać.";
   } else {
-    msg.textContent="Zapisy ruszą wkrótce – formularz nie ma jeszcze ustawionego adresu odbiorcy.";
+    msg.textContent="Zapisy uruchomimy za chwilę. Wróć tu wkrótce albo napisz do nas: "+CONTACT.email+".";
   }
 });
 </script>
