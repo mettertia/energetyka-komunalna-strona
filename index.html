@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Energetyka Komunalna – serwis dla samorządów i energetyków</title>
+<meta name="description" content="Serwis dla jednostek samorządu terytorialnego i energetyków miejskich, prowadzony przez inżynierów ekspertów. Premiera serwisu i naszych usług już wkrótce.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pine:#0f2f26;      /* tło */
+  --pine-2:#163f33;    /* panele */
+  --line:#2c5a4b;      /* linie siatki i podziały */
+  --mist:#eef3ef;      /* tekst główny */
+  --sage:#a9c2b6;      /* tekst pomocniczy */
+  --heat:#f2a93b;      /* przewód zasilający */
+  --cool:#7fc6d6;      /* przewód powrotny */
+  --display:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --text:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--pine);color:var(--mist);font-family:var(--text);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--heat);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+@media (max-width:520px){.wrap{padding:0 16px}}
+
+/* górny pasek */
+.top{display:flex;align-items:center;justify-content:space-between;padding:22px 0}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;font-family:var(--display);font-weight:600;font-size:1.15rem;letter-spacing:.01em}
+.brand svg{flex:none}
+.top-login{font-weight:500;text-decoration:none;white-space:nowrap;border:1px solid var(--line);padding:8px 16px;border-radius:999px;font-size:.95rem}
+.top-login:hover{border-color:var(--sage)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:48px;align-items:center;padding:40px 0 72px}
+@media (max-width:940px){.hero{grid-template-columns:1fr;gap:28px;padding-top:16px}}
+.status{display:inline-flex;align-items:center;gap:10px;font-size:.95rem;color:var(--sage);margin:0 0 22px}
+.status i{width:10px;height:10px;border-radius:50%;background:var(--heat);box-shadow:0 0 0 0 rgba(242,169,59,.6);animation:beat 2.4s infinite}
+@keyframes beat{0%{box-shadow:0 0 0 0 rgba(242,169,59,.55)}70%{box-shadow:0 0 0 12px rgba(242,169,59,0)}100%{box-shadow:0 0 0 0 rgba(242,169,59,0)}}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(2.6rem,6.2vw,4.6rem);line-height:1.02;letter-spacing:-.015em;margin:0 0 22px;max-width:13ch}
+.lede{font-size:1.18rem;color:var(--sage);max-width:34em;margin:0 0 30px}
+.lede strong{color:var(--mist);font-weight:500}
+
+/* formularz powiadomienia */
+.notify{display:grid;grid-template-columns:1fr auto;gap:10px;max-width:520px}
+.notify input[type=email],.notify select{width:100%;padding:14px 16px;border-radius:10px;border:1px solid var(--line);background:var(--pine-2);color:var(--mist);font:inherit}
+.notify select{grid-column:1/-1}
+.notify input::placeholder{color:#7f9b8f}
+.btn{appearance:none;border:0;cursor:pointer;font:inherit;font-weight:600;padding:14px 22px;border-radius:10px;background:var(--heat);color:#2a1800;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap}
+.btn:hover{background:#f6bb5d}
+.btn.ghost{background:transparent;color:var(--mist);border:1px solid var(--sage)}
+.btn.ghost:hover{background:rgba(255,255,255,.06)}
+.consent{grid-column:1/-1;display:flex;gap:10px;align-items:flex-start;font-size:.86rem;color:var(--sage)}
+.consent input{margin-top:4px;accent-color:var(--heat)}
+.msg{grid-column:1/-1;font-size:.92rem;min-height:1.4em;margin:2px 0 0;color:var(--heat)}
+.hp{display:none!important}
+@media (max-width:520px){.notify{grid-template-columns:1fr}}
+
+/* schemat sieci */
+.map{position:relative;border:1px solid var(--line);border-radius:20px;background:
+  linear-gradient(var(--pine-2),var(--pine-2)) padding-box;overflow:hidden}
+.map svg{display:block;width:100%;height:auto}
+.legend{display:flex;gap:20px;flex-wrap:wrap;padding:12px 18px;border-top:1px solid var(--line);font-size:.85rem;color:var(--sage)}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.legend b{display:inline-block;width:22px;height:3px;border-radius:2px}
+.flow{stroke-dasharray:6 26;animation:flow 2.6s linear infinite}
+.flow.ret{animation-direction:reverse;animation-duration:3.4s}
+.volt{stroke-dasharray:2 10;animation:flow 1.6s linear infinite}
+.rays{transform-origin:0 0;animation:spin 40s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.legend b.dot{background:repeating-linear-gradient(90deg,#eef3ef 0 3px,transparent 3px 7px)}
+[data-meter]{font-variant-numeric:tabular-nums}
+@keyframes flow{to{stroke-dashoffset:-64}}
+@media (prefers-reduced-motion:reduce){.flow,.volt,.rays,.status i{animation:none}html{scroll-behavior:auto}}
+
+/* dla kogo */
+.who{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.who>div{padding:34px 28px 36px 0}
+.who>div+div{padding-left:28px;border-left:1px solid var(--line)}
+@media (max-width:860px){.who{grid-template-columns:1fr}.who>div,.who>div+div{padding:26px 0;border-left:0}.who>div+div{border-top:1px solid var(--line)}}
+.who h2{font-family:var(--display);font-weight:600;font-size:1.5rem;margin:0 0 8px;display:flex;align-items:center;gap:12px}
+.who h2 svg{flex:none}
+.who p{margin:0;color:var(--sage)}
+
+/* zakres */
+.scope{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:48px;padding:72px 0}
+@media (max-width:860px){.scope{grid-template-columns:1fr;gap:20px;padding:52px 0}}
+.scope h2{font-family:var(--display);font-weight:700;font-size:clamp(1.9rem,3.6vw,2.6rem);line-height:1.08;margin:0}
+.scope ul{list-style:none;margin:0;padding:0}
+.scope li{display:grid;grid-template-columns:28px 1fr;gap:12px;padding:16px 0;border-bottom:1px solid var(--line)}
+.scope li:first-child{padding-top:4px}
+.scope li svg{margin-top:5px}
+.scope li b{display:block;font-weight:600}
+.scope li span{color:var(--sage);font-size:.96rem}
+
+/* logowanie */
+.login{background:var(--mist);color:var(--pine);border-radius:24px;padding:44px clamp(22px,5vw,56px);display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:36px;align-items:center;margin-bottom:64px}
+@media (max-width:860px){.login{grid-template-columns:1fr}}
+.login h2{font-family:var(--display);font-weight:700;font-size:clamp(1.8rem,3.4vw,2.4rem);margin:0 0 10px;line-height:1.1}
+.login p{margin:0;color:#3d5a4f}
+.login-box{background:#fff;border:1px solid #d5e1da;border-radius:16px;padding:22px;display:grid;gap:12px}
+.login-box .btn{background:var(--pine);color:var(--mist)}
+.login-box .btn:hover{background:#1b4a3c}
+.login-box small{color:#557367;font-size:.85rem}
+
+footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--sage);font-size:.9rem}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer nav{display:flex;gap:18px;flex-wrap:wrap}
+footer a{text-decoration:none} footer a:hover{color:var(--mist);text-decoration:underline}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="#">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><rect width="34" height="34" rx="9" fill="#163f33" stroke="#2c5a4b"/><path d="M8 22h18" stroke="#f2a93b" stroke-width="2.4" stroke-linecap="round"/><path d="M8 27h18" stroke="#7fc6d6" stroke-width="2.4" stroke-linecap="round"/><path d="M11 18V11l6-4 6 4v7" fill="none" stroke="#eef3ef" stroke-width="2" stroke-linejoin="round"/></svg>
+      Energetyka Komunalna
+    </a>
+    <a class="top-login" href="#logowanie">Zaloguj się</a>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="h1">
+      <div>
+        <p class="status"><i aria-hidden="true"></i>Premiera serwisu już wkrótce</p>
+        <h1 id="h1">Serwis dla samorządów i energetyków miejskich</h1>
+        <p class="lede">Prowadzony przez <strong>inżynierów i ekspertów</strong> energetyki komunalnej. Przepisy, dane o zużyciu energii w budynkach, dofinansowania i doradztwo – w jednym miejscu. Premiera serwisu i naszych usług już wkrótce.</p>
+
+        <form class="notify" id="notifyForm" novalidate>
+          <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off">
+          <label class="sr" for="nEmail" style="position:absolute;left:-9999px">Adres e-mail</label>
+          <input id="nEmail" type="email" placeholder="Twój adres e-mail" autocomplete="email" required>
+          <button class="btn" type="submit">Powiadom mnie o premierze</button>
+          <label class="sr" for="nRole" style="position:absolute;left:-9999px">Kim jesteś</label>
+          <select id="nRole">
+            <option value="">Kim jesteś? (opcjonalnie)</option>
+            <option>Samorząd / jednostka budżetowa</option>
+            <option>Energetyk miejski / zarządca budynków</option>
+            <option>Przedsiębiorstwo ciepłownicze</option>
+            <option>Inne</option>
+          </select>
+          <label class="consent"><input type="checkbox" id="nConsent"><span>Zgadzam się na jednorazową wiadomość e-mail o uruchomieniu serwisu. <a href="polityka-prywatnosci.html">Polityka prywatności</a></span></label>
+          <p class="msg" id="nMsg" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+
+      <figure class="map" aria-label="Schemat lokalnego systemu energetycznego: ciepłownia, biogazownia z kogeneracją, fotowoltaika, kolektory słoneczne i liczniki w budynkach publicznych">
+        <svg viewBox="0 0 600 420" aria-hidden="true" font-family="IBM Plex Sans, sans-serif">
+          <defs>
+            <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0H0V30" fill="none" stroke="#1f4c3f" stroke-width="1"/></pattern>
+            <pattern id="pv" width="7" height="7" patternUnits="userSpaceOnUse"><rect width="7" height="7" fill="#24527a"/><path d="M7 0H0V7" fill="none" stroke="#7fa9cf" stroke-width=".8"/></pattern>
+          </defs>
+          <rect width="600" height="420" fill="url(#grid)"/>
+
+          <!-- słońce -->
+          <g class="sun" transform="translate(520 50)">
+            <circle r="15" fill="#f2a93b"/>
+            <g stroke="#f2a93b" stroke-width="2.4" stroke-linecap="round" class="rays">
+              <path d="M0-24v-7M0 24v7M-24 0h-7M24 0h7M17-17l5-5M-17 17l-5 5M17 17l5 5M-17-17l-5-5"/>
+            </g>
+          </g>
+
+          <!-- sieć ciepłownicza: tło rur -->
+          <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-opacity=".32">
+            <path d="M70 110H520" stroke="#f2a93b" stroke-width="5"/>
+            <path d="M70 124H520" stroke="#7fc6d6" stroke-width="5"/>
+            <path d="M150 300V110" stroke="#f2a93b" stroke-width="4"/>
+            <path d="M136 300V124" stroke="#7fc6d6" stroke-width="4"/>
+            <path d="M224 110V292M400 110V292M300 110V74" stroke="#f2a93b" stroke-width="4"/>
+            <path d="M238 124V292M414 124V292M314 124V74" stroke="#7fc6d6" stroke-width="4"/>
+          </g>
+          <!-- przepływ ciepła -->
+          <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path class="flow" d="M70 110H520" stroke="#f2a93b" stroke-width="5"/>
+            <path class="flow" d="M150 300V110" stroke="#f2a93b" stroke-width="4"/>
+            <path class="flow" d="M224 110V292M400 110V292M300 110V74" stroke="#f2a93b" stroke-width="4"/>
+            <path class="flow ret" d="M70 124H520" stroke="#7fc6d6" stroke-width="5"/>
+            <path class="flow ret" d="M136 300V124" stroke="#7fc6d6" stroke-width="4"/>
+            <path class="flow ret" d="M238 124V292M414 124V292M314 124V74" stroke="#7fc6d6" stroke-width="4"/>
+          </g>
+          <!-- sieć elektryczna -->
+          <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M182 330H192V388H548V178M234 388V350M406 388V350" stroke="#eef3ef" stroke-opacity=".18" stroke-width="2.4"/>
+            <path class="volt" d="M182 330H192V388H548V178" stroke="#eef3ef" stroke-width="2.4"/>
+            <path class="volt" d="M234 388V350M406 388V350" stroke="#eef3ef" stroke-width="2.4"/>
+          </g>
+
+          <!-- ciepłownia -->
+          <g>
+            <rect x="22" y="84" width="48" height="62" rx="6" fill="#0f2f26" stroke="#f2a93b" stroke-width="2"/>
+            <path d="M34 84V62M50 84V54" stroke="#a9c2b6" stroke-width="5" stroke-linecap="round"/>
+            <text x="46" y="164" text-anchor="middle" fill="#a9c2b6" font-size="12.5">Ciepłownia</text>
+          </g>
+
+          <!-- biogazownia z kogeneracją -->
+          <g>
+            <path d="M28 352a26 26 0 0 1 52 0z" fill="#1f4c3f" stroke="#eef3ef" stroke-width="1.6"/>
+            <path d="M84 352a22 22 0 0 1 44 0z" fill="#1f4c3f" stroke="#eef3ef" stroke-width="1.6"/>
+            <path d="M24 352h108" stroke="#eef3ef" stroke-width="1.6"/>
+            <path d="M128 340h12" stroke="#a9c2b6" stroke-width="3"/>
+            <rect x="140" y="300" width="42" height="52" rx="6" fill="#0f2f26" stroke="#f2a93b" stroke-width="2"/>
+            <path d="M161 336c-7-5-5-11 0-17 1 5 6 6 6 11 0 4-3 6-6 6z" fill="#f2a93b"/>
+            <text x="86" y="374" text-anchor="middle" fill="#a9c2b6" font-size="12.5">Biogazownia</text>
+            <text x="86" y="389" text-anchor="middle" fill="#7f9b8f" font-size="11">z kogeneracją</text>
+          </g>
+
+          <!-- szkoła z fotowoltaiką -->
+          <g>
+            <path d="M200 290l32-20 32 20z" fill="url(#pv)" stroke="#7fa9cf" stroke-width="1"/>
+            <rect x="202" y="290" width="60" height="60" rx="5" fill="#0f2f26" stroke="#eef3ef" stroke-width="1.6"/>
+            <path d="M212 304h12M240 304h12M212 320h12M240 320h12" stroke="#2c5a4b" stroke-width="7"/>
+          </g>
+
+          <!-- przychodnia z kolektorami słonecznymi -->
+          <g>
+            <rect x="378" y="278" width="58" height="12" rx="2" fill="#0f2f26" stroke="#7fc6d6" stroke-width="1.2"/>
+            <path d="M384 279v10M390 279v10M396 279v10M402 279v10M408 279v10M414 279v10M420 279v10M426 279v10M432 279v10" stroke="#7fc6d6" stroke-width="1.6"/>
+            <rect x="372" y="290" width="70" height="60" rx="5" fill="#0f2f26" stroke="#eef3ef" stroke-width="1.6"/>
+            <path d="M396 320h22M407 309v22" stroke="#7fc6d6" stroke-width="3.2"/>
+          </g>
+
+          <!-- urząd -->
+          <g>
+            <rect x="520" y="86" width="56" height="92" rx="5" fill="#0f2f26" stroke="#eef3ef" stroke-width="1.6"/>
+            <path d="M532 100h32M532 118h32M532 136h32M532 154h32" stroke="#2c5a4b" stroke-width="7"/>
+          </g>
+
+          <!-- hala sportowa z fotowoltaiką -->
+          <g>
+            <path d="M262 36h100l-6-10h-88z" fill="url(#pv)" stroke="#7fa9cf" stroke-width="1"/>
+            <rect x="258" y="36" width="108" height="38" rx="6" fill="#0f2f26" stroke="#eef3ef" stroke-width="1.6"/>
+            <text x="312" y="60" text-anchor="middle" fill="#eef3ef" font-size="12.5">Hala sportowa</text>
+          </g>
+
+          <!-- liczniki -->
+          <g font-family="IBM Plex Sans Condensed, sans-serif">
+            <g transform="translate(374 30)">
+              <rect width="104" height="42" rx="8" fill="#0f2f26" stroke="#2c5a4b"/>
+              <text x="10" y="16" fill="#a9c2b6" font-size="11">Fotowoltaika hali</text>
+              <text x="10" y="34" fill="#f2a93b" font-size="15" font-weight="700" data-meter="pv">+12,4 kW</text>
+            </g>
+            <g transform="translate(270 300)">
+              <rect width="96" height="42" rx="8" fill="#0f2f26" stroke="#2c5a4b"/>
+              <text x="10" y="16" fill="#a9c2b6" font-size="11">Szkoła · prąd</text>
+              <text x="10" y="34" fill="#eef3ef" font-size="15" font-weight="700" data-meter="kwh">48 213 kWh</text>
+            </g>
+            <g transform="translate(450 300)">
+              <rect width="124" height="42" rx="8" fill="#0f2f26" stroke="#2c5a4b"/>
+              <text x="10" y="16" fill="#a9c2b6" font-size="11">Przychodnia · ciepło</text>
+              <text x="10" y="34" fill="#7fc6d6" font-size="15" font-weight="700" data-meter="gj">1284,6 GJ</text>
+            </g>
+            <g transform="translate(426 188)">
+              <rect width="88" height="42" rx="8" fill="#0f2f26" stroke="#2c5a4b"/>
+              <text x="10" y="16" fill="#a9c2b6" font-size="11">Urząd · prąd</text>
+              <text x="10" y="34" fill="#eef3ef" font-size="15" font-weight="700" data-meter="kwh2">21 907 kWh</text>
+            </g>
+            <g transform="translate(300 150)">
+              <rect width="70" height="44" rx="8" fill="#0f2f26" stroke="#2c5a4b"/>
+              <text x="10" y="18" fill="#f2a93b" font-size="13" font-weight="700">90 °C</text>
+              <text x="10" y="36" fill="#7fc6d6" font-size="13" font-weight="700">55 °C</text>
+            </g>
+          </g>
+        </svg>
+        <figcaption class="legend"><span><b style="background:#f2a93b"></b>ciepło – zasilanie</span><span><b style="background:#7fc6d6"></b>ciepło – powrót</span><span><b class="dot"></b>energia elektryczna</span></figcaption>
+      </figure>
+    </section>
+
+    <section class="who" aria-label="Dla kogo jest serwis">
+      <div>
+        <h2><svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><path d="M3 23h20M5 23V11l8-6 8 6v12" fill="none" stroke="#f2a93b" stroke-width="2" stroke-linejoin="round"/><path d="M10 23v-6h6v6" fill="none" stroke="#f2a93b" stroke-width="2"/></svg>Dla samorządów</h2>
+        <p>Gminy, powiaty i jednostki budżetowe: obowiązki z dyrektywy EED, dane o zużyciu energii w budynkach od roku bazowego 2021, programy dofinansowań.</p>
+      </div>
+      <div>
+        <h2><svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="9" fill="none" stroke="#7fc6d6" stroke-width="2"/><path d="M13 13l5-4" stroke="#7fc6d6" stroke-width="2" stroke-linecap="round"/><path d="M7 17h12" stroke="#7fc6d6" stroke-width="2"/></svg>Dla energetyków miejskich</h2>
+        <p>Monitoring liczników i odczytów, wykrywanie nieprawidłowości w zużyciu, energia bierna, porady i aktualne przepisy w jednym miejscu.</p>
+      </div>
+      <div>
+        <h2><svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><path d="M5 21l8-16 8 16" fill="none" stroke="#eef3ef" stroke-width="2" stroke-linejoin="round"/><path d="M8.5 15h9" stroke="#eef3ef" stroke-width="2"/></svg>Prowadzony przez inżynierów</h2>
+        <p>Za serwisem stoi zespół inżynierów i ekspertów z praktyką w ciepłownictwie, planowaniu energetycznym i efektywności energetycznej.</p>
+      </div>
+    </section>
+
+    <section class="scope" aria-labelledby="scopeH">
+      <h2 id="scopeH">Co przygotowujemy na premierę</h2>
+      <ul>
+        <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="5" fill="none" stroke="#f2a93b" stroke-width="2.4"/></svg><div><b>Dyrektywa EED w praktyce gminy</b><span>Harmonogram, obowiązki sektora publicznego i aktualny stan wdrażania przepisów w Polsce.</span></div></li>
+        <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="5" fill="none" stroke="#f2a93b" stroke-width="2.4"/></svg><div><b>Monitoring budynków i rok bazowy</b><span>Baza budynków, liczniki, odczyty i porównanie zużycia z rokiem 2021.</span></div></li>
+        <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="5" fill="none" stroke="#f2a93b" stroke-width="2.4"/></svg><div><b>Dofinansowania</b><span>Przegląd programów dla samorządów i spółek komunalnych: ciepłownictwo, kogeneracja, budynki publiczne, schrony.</span></div></li>
+        <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="5" fill="none" stroke="#f2a93b" stroke-width="2.4"/></svg><div><b>Konsultacje z ekspertami</b><span>Rozmowa, oferta albo przyjazd na miejsce – spółdzielnie energetyczne, ciepło sieciowe, plany zaopatrzenia w ciepło.</span></div></li>
+        <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="5" fill="none" stroke="#f2a93b" stroke-width="2.4"/></svg><div><b>Energia bierna</b><span>Sprawdzimy, czy opłaty z faktur da się ograniczyć, i zajmiemy się optymalizacją.</span></div></li>
+      </ul>
+    </section>
+
+    <section class="login" id="logowanie" aria-labelledby="loginH">
+      <div>
+        <h2 id="loginH">Logowanie</h2>
+        <p>Wersja testowa serwisu jest dostępna dla partnerów i osób, które otrzymały od nas hasło dostępu. Po kliknięciu podasz hasło i przejdziesz do serwisu.</p>
+      </div>
+      <div class="login-box">
+        <a class="btn" href="portal/">Zaloguj się do serwisu</a>
+        <small>Nie masz dostępu? Napisz do nas: <a id="mailLink" href="#">adres e-mail</a></small>
+      </div>
+    </section>
+  </main>
+</div>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Energetyka Komunalna · <a href="mailto:admin@energetyka-komunalna.pl">admin@energetyka-komunalna.pl</a></span>
+    <nav aria-label="Dokumenty">
+      <a href="regulamin.html">Regulamin</a>
+      <a href="polityka-prywatnosci.html">Polityka prywatności</a>
+      <a href="polityka-cookies.html">Polityka cookies</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+/* ===== KONTAKT – UZUPEŁNIJ (te same dane co w portal/index.html) ===== */
+const CONTACT = {
+  email: "admin@energetyka-komunalna.pl",
+  web3formsKey: ""    // klucz z https://web3forms.com
+};
+
+const $ = s => document.querySelector(s);
+
+/* liczniki na schemacie */
+(function(){
+  if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const m={kwh:48213,kwh2:21907,gj:1284.6,pv:12.4};
+  const f=(n,d)=>n.toLocaleString("pl-PL",{minimumFractionDigits:d,maximumFractionDigits:d});
+  const el=k=>document.querySelector('[data-meter="'+k+'"]');
+  setInterval(()=>{
+    m.kwh+=1+Math.floor(Math.random()*3); m.kwh2+=Math.random()<.6?1:0; m.gj+=0.1;
+    m.pv=Math.min(14.8,Math.max(9.6,m.pv+(Math.random()-.5)*0.6));
+    el("kwh").textContent=f(m.kwh,0)+" kWh"; el("kwh2").textContent=f(m.kwh2,0)+" kWh";
+    el("gj").textContent=f(m.gj,1)+" GJ"; el("pv").textContent="+"+f(m.pv,1)+" kW";
+  },1400);
+})();
+(function(){
+  const a=$("#mailLink");
+  if(CONTACT.email){a.textContent=CONTACT.email;a.href="mailto:"+CONTACT.email}
+  else{a.textContent="formularz powyżej";a.href="#nEmail"}
+})();
+
+$("#notifyForm").addEventListener("submit", async e=>{
+  e.preventDefault();
+  const f=e.target, msg=$("#nMsg"), email=$("#nEmail").value.trim();
+  if(f.botcheck.checked) return;
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){msg.textContent="Wpisz poprawny adres e-mail, np. jan.kowalski@gmina.pl.";$("#nEmail").focus();return}
+  if(!$("#nConsent").checked){msg.textContent="Zaznacz zgodę na wiadomość o uruchomieniu serwisu.";return}
+  const role=$("#nRole").value||"nie podano";
+  const btn=f.querySelector("button"), old=btn.textContent;
+  if(CONTACT.web3formsKey){
+    btn.disabled=true;btn.textContent="Zapisywanie…";
+    try{
+      const r=await fetch("https://api.web3forms.com/submit",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},
+        body:JSON.stringify({access_key:CONTACT.web3formsKey,subject:"[Energetyka Komunalna] Zapis na powiadomienie o premierze",from_name:"energetyka-komunalna.pl",replyto:email,
+          message:"Prośba o powiadomienie o premierze serwisu.\nE-mail: "+email+"\nKim jest: "+role,"E-mail":email,"Kim jest":role})});
+      const j=await r.json().catch(()=>({}));
+      if(r.ok&&j.success){f.reset();msg.textContent="Zapisano. Napiszemy, gdy serwis będzie gotowy."}
+      else throw 0;
+    }catch(_){msg.textContent="Nie udało się zapisać. Spróbuj ponownie za chwilę"+(CONTACT.email?" albo napisz na "+CONTACT.email:"")+"."}
+    finally{btn.disabled=false;btn.textContent=old}
+  } else if(CONTACT.email){
+    location.href="mailto:"+CONTACT.email+"?subject="+encodeURIComponent("Powiadomienie o premierze")+"&body="+encodeURIComponent("Proszę o powiadomienie o premierze serwisu.\nE-mail: "+email+"\nKim jestem: "+role);
+    msg.textContent="Otwieramy program pocztowy z gotową wiadomością – wystarczy ją wysłać.";
+  } else {
+    msg.textContent="Zapisy ruszą wkrótce – formularz nie ma jeszcze ustawionego adresu odbiorcy.";
+  }
+});
+</script>
+</body>
+</html>
